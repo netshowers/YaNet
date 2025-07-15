@@ -25,6 +25,8 @@ const ruleOptions = {
   spotify: true, // Spotify
   youtube: true, // YouTube
   bahamut: true, // 巴哈姆特/动画疯
+  fubotv: true, // FuboTV
+  paypal: true, //PayPal
   netflix: true, // Netflix网飞
   tiktok: true, // 国际版抖音
   disney: true, // 迪士尼
@@ -32,6 +34,7 @@ const ruleOptions = {
   hbo: true, // HBO
   biliintl: true, // 哔哩哔哩东南亚
   tvb: true, // TVB
+  dazn: true, //DAZN
   hulu: true, // Hulu
   primevideo: true, // 亚马逊prime video
   telegram: true, // Telegram通讯软件
@@ -44,18 +47,6 @@ const ruleOptions = {
 }
 
 /**
- * 前置规则
- * 如果有需要前置的自定义规则，可以自行修改
- */
-const rules = [
-  'RULE-SET,applications,下载软件',
-  'PROCESS-NAME,SunloginClient,DIRECT',
-  'PROCESS-NAME,SunloginClient.exe,DIRECT',
-  'PROCESS-NAME,AnyDesk,DIRECT',
-  'PROCESS-NAME,AnyDesk.exe,DIRECT',
-]
-
-/**
  * 地区配置，通过regex匹配代理节点名称
  * regex会有一定概率误判，自己调整一下吧
  * excludeHighPercentage是排除高倍率节点的开关，只对地区分组有效
@@ -65,70 +56,70 @@ const regionOptions = {
   excludeHighPercentage: true,
   regions: [
     {
-      name: 'HK香港',
-      regex: /港|🇭🇰|hk|hongkong|hong kong/i,
+      name: '🇭🇰香港',
+      regex: /^(?!.*Premium).*(港|🇭🇰|hk|hongkong|hong kong)/i,
       ratioLimit: 2,
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Hong_Kong.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Hong_Kong.png',
     },
     {
-      name: 'US美国',
-      regex: /美|🇺🇸|us|united state|america/i,
+      name: '🇺🇸美国',
+      regex: /^(?!.*(Austria|Russia|Australia|Premium)).*(美|🇺🇸|us|united state|america)/i,
       ratioLimit: 2,
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/United_States.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/United_States.png',
     },
     {
-      name: 'JP日本',
-      regex: /日本|🇯🇵|jp|japan/i,
+      name: '🇯🇵日本',
+      regex: /^(?!.*Premium).*(日本|🇯🇵|jp|japan)/i,
       ratioLimit: 2,
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Japan.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Japan.png',
     },
     {
-      name: 'KR韩国',
-      regex: /韩|🇰🇷|kr|korea/i,
+      name: '🇰🇷韩国',
+      regex: /^(?!.*Premium).*(韩|🇰🇷|kr|korea)/i,
       ratioLimit: 2,
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Korea.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Korea.png',
     },
     {
-      name: 'SG新加坡',
-      regex: /新加坡|🇸🇬|sg|singapore/i,
+      name: '🇸🇬新加坡',
+      regex: /^(?!.*Premium).*(新加坡|🇸🇬|sg|singapore)/i,
       ratioLimit: 2,
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Singapore.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Singapore.png',
     },
     {
-      name: 'CN中国大陆',
-      regex: /中国|🇨🇳|cn|china/i,
+      name: '🇨🇳中国大陆',
+      regex: /^(?!.*Premium).*(中国|🇨🇳|cn|china)/i,
       ratioLimit: 2,
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/China_Map.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/China_Map.png',
     },
     {
-      name: 'TW台湾省',
-      regex: /台湾|🇹🇼|tw|taiwan|tai wan/i,
+      name: '🇹🇼台湾省',
+      regex: /^(?!.*Premium).*(台湾|🇹🇼|tw|taiwan|tai wan)/i,
       ratioLimit: 2,
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/China.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/China.png',
     },
     {
-      name: 'GB英国',
-      regex: /英|🇬🇧|uk|united kingdom|great britain/i,
+      name: '🇬🇧英国',
+      regex: /^(?!.*Premium).*(英|🇬🇧|uk|united kingdom|great britain)/i,
       ratioLimit: 2,
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/United_Kingdom.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/United_Kingdom.png',
     },
     {
-      name: 'DE德国',
-      regex: /德国|🇩🇪|de|germany/i,
+      name: '🇩🇪德国',
+      regex: /^(?!.*Premium).*(德国|🇩🇪|germany)/i,
       ratioLimit: 2,
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Germany.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Germany.png',
     },
     {
-      name: 'MY马来西亚',
-      regex: /马来|🇩🇪|my|malaysia/i,
+      name: '🇲🇾马来西亚',
+      regex: /^(?!.*Premium).*(马来|🇲🇾|my|malaysia)/i,
       ratioLimit: 2,
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Malaysia.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Malaysia.png',
     },
     {
-      name: 'TK土耳其',
-      regex: /土耳其|🇹🇷|tk|turkey/i,
+      name: '🇹🇷土耳其',
+      regex: /^(?!.*Premium).*(土耳其|🇹🇷|tk|turkey)/i,
       ratioLimit: 2,
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Turkey.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Turkey.png',
     },
   ],
 }
@@ -140,8 +131,9 @@ const regionOptions = {
  */
 const defaultDNS = ['tls://223.5.5.5']
 
-const chinaDNS = ['119.29.29.29', '223.5.5.5']
+const chinaDNS = ['202.96.69.38','202.96.64.68']
 
+//const foreignDNS = ['tls://8.8.8.8', 'tls://1.1.1.1', 'tls://9.9.9.9']
 const foreignDNS = ['https://120.53.53.53/dns-query', 'https://223.5.5.5/dns-query']
 
 /**
@@ -193,9 +185,19 @@ ruleProviders.set('applications', {
   ...ruleProviderCommon,
   behavior: 'classical',
   format: 'text',
-  url: 'https://fastly.jsdelivr.net/gh/DustinWin/ruleset_geodata@clash-ruleset/applications.list',
+  url: 'https://cdn.hashy.top/gh/DustinWin/ruleset_geodata@clash-ruleset/applications.list',
   path: './ruleset/DustinWin/applications.list',
 })
+
+const rules = [
+  'RULE-SET,applications,⬇️下载软件',
+  'PROCESS-NAME,SunloginClient,DIRECT',
+  'PROCESS-NAME,SunloginClient.exe,DIRECT',
+  'DOMAIN-SUFFIX,micu.hk,DIRECT',
+  'DOMAIN-SUFFIX,023168.xyz,DIRECT',
+  'DOMAIN-SUFFIX,hifini.com,DIRECT',
+  'DOMAIN-SUFFIX,hdfans.org,DIRECT',
+]
 
 // 程序入口
 function main(config) {
@@ -209,7 +211,9 @@ function main(config) {
   }
 
   let regionProxyGroups = []
-  let otherProxyGroups = config.proxies.map((b) => {
+  let otherProxyGroups = config.proxies
+    .filter((proxy) => !/Premium/i.test(proxy.name))
+    .map((b) => {
     return b.name
   })
 
@@ -257,8 +261,8 @@ function main(config) {
   config['sniffer'] = {
     enable: true,
     'force-dns-mapping': true,
-    'parse-pure-ip': false,
-    'override-destination': true,
+    'parse-pure-ip': true,
+    'override-destination': false,
     sniff: {
       TLS: {
         ports: [443, 8443],
@@ -270,22 +274,7 @@ function main(config) {
         ports: [443, 8443],
       },
     },
-    'skip-src-address': [
-      '127.0.0.0/8',
-      '192.168.0.0/16',
-      '10.0.0.0/8',
-      '172.16.0.0/12',
-    ],
-    'force-domain': [
-      '+.google.com',
-      '+.googleapis.com',
-      '+.googleusercontent.com',
-      '+.youtube.com',
-      '+.facebook.com',
-      '+.messenger.com',
-      '+.fbcdn.net',
-      'fbcdn-a.akamaihd.net',
-    ],
+    'force-domain': [],
     'skip-domain': ['Mijia Cloud', '+.oray.com'],
   }
 
@@ -359,16 +348,16 @@ function main(config) {
   })
 
   if (otherProxyGroups.length > 0) {
-    proxyGroupsRegionNames.push('其他节点')
+    proxyGroupsRegionNames.push('🌐其他节点')
   }
 
   config['proxy-groups'] = [
     {
       ...groupBaseOption,
-      name: '默认节点',
+      name: '🚀默认节点',
       type: 'select',
       proxies: [...proxyGroupsRegionNames, '直连'],
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Proxy.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Proxy.png',
     },
   ]
 
@@ -381,9 +370,9 @@ function main(config) {
 
   if (ruleOptions.openai) {
     rules.push(
-      'DOMAIN-SUFFIX,grazie.ai,国外AI',
-      'DOMAIN-SUFFIX,grazie.aws.intellij.net,国外AI',
-      'RULE-SET,ai,国外AI',
+      'DOMAIN-SUFFIX,grazie.ai,🤖国外AI',
+      'DOMAIN-SUFFIX,grazie.aws.intellij.net,🤖国外AI',
+      'RULE-SET,ai,🤖国外AI',
     )
     ruleProviders.set('ai', {
       ...ruleProviderCommon,
@@ -394,343 +383,396 @@ function main(config) {
     })
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: '国外AI',
+      name: '🤖国外AI',
       type: 'select',
-      proxies: ['默认节点', ...proxyGroupsRegionNames, '直连'],
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
       url: 'https://chat.openai.com/cdn-cgi/trace',
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/ChatGPT.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/ChatGPT.png',
     })
   }
 
   if (ruleOptions.youtube) {
-    rules.push('GEOSITE,youtube,YouTube')
+    rules.push('GEOSITE,youtube,📺YouTube')
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: 'YouTube',
+      name: '📺YouTube',
       type: 'select',
-      proxies: ['默认节点', ...proxyGroupsRegionNames, '直连'],
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
       url: 'https://www.youtube.com/s/desktop/494dd881/img/favicon.ico',
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/YouTube.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/YouTube.png',
     })
   }
 
   if (ruleOptions.biliintl) {
-    rules.push('GEOSITE,biliintl,哔哩哔哩东南亚')
+    rules.push('GEOSITE,biliintl,📺哔哩哔哩东南亚')
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: '哔哩哔哩东南亚',
+      name: '📺哔哩哔哩东南亚',
       type: 'select',
-      proxies: ['默认节点', '直连', ...proxyGroupsRegionNames],
+      proxies: ['🚀默认节点', '直连', ...proxyGroupsRegionNames],
       url: 'https://www.bilibili.tv/',
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/bilibili_3.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/bilibili_3.png',
     })
   }
 
   if (ruleOptions.bahamut) {
-    rules.push('GEOSITE,bahamut,巴哈姆特')
+    rules.push('GEOSITE,bahamut,📺巴哈姆特')
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: '巴哈姆特',
+      name: '📺巴哈姆特',
       type: 'select',
-      proxies: ['默认节点', '直连', ...proxyGroupsRegionNames],
+      proxies: ['🚀默认节点', '直连', ...proxyGroupsRegionNames],
       url: 'https://ani.gamer.com.tw/ajax/getdeviceid.php',
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Bahamut.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Bahamut.png',
     })
   }
 
   if (ruleOptions.disney) {
-    rules.push('GEOSITE,disney,Disney+')
+    rules.push('GEOSITE,disney,📺Disney+')
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: 'Disney+',
+      name: '📺Disney+',
       type: 'select',
-      proxies: ['默认节点', ...proxyGroupsRegionNames, '直连'],
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
       url: 'https://disney.api.edge.bamgrid.com/devices',
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Disney+.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Disney+.png',
     })
   }
 
   if (ruleOptions.netflix) {
-    rules.push('GEOSITE,netflix,NETFLIX')
+    rules.push('GEOSITE,netflix,📺NETFLIX')
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: 'NETFLIX',
+      name: '📺NETFLIX',
       type: 'select',
-      proxies: ['默认节点', ...proxyGroupsRegionNames, '直连'],
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
       url: 'https://api.fast.com/netflix/speedtest/v2?https=true',
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Netflix.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Netflix.png',
     })
-  }
+  }  
 
   if (ruleOptions.tiktok) {
-    rules.push('GEOSITE,tiktok,Tiktok')
+    rules.push('GEOSITE,tiktok,📺Tiktok')
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: 'Tiktok',
+      name: '📺Tiktok',
       type: 'select',
-      proxies: ['默认节点', ...proxyGroupsRegionNames, '直连'],
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
       url: 'https://www.tiktok.com/',
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/TikTok.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/TikTok.png',
     })
   }
 
   if (ruleOptions.spotify) {
-    rules.push('GEOSITE,spotify,Spotify')
+    rules.push('GEOSITE,spotify,🎵Spotify')
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: 'Spotify',
+      name: '🎵Spotify',
       type: 'select',
-      proxies: ['默认节点', ...proxyGroupsRegionNames, '直连'],
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
       url: 'http://spclient.wg.spotify.com/signup/public/v1/account',
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Spotify.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Spotify.png',
     })
   }
 
   if (ruleOptions.pixiv) {
-    rules.push('GEOSITE,pixiv,Pixiv')
+    rules.push('GEOSITE,pixiv,🎨Pixiv')
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: 'Pixiv',
+      name: '🎨Pixiv',
       type: 'select',
-      proxies: ['默认节点', ...proxyGroupsRegionNames, '直连'],
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
       url: 'http://spclient.wg.spotify.com/signup/public/v1/account',
       icon: 'https://play-lh.googleusercontent.com/8pFuLOHF62ADcN0ISUAyEueA5G8IF49mX_6Az6pQNtokNVHxIVbS1L2NM62H-k02rLM=w240-h480-rw',
     })
   }
 
   if (ruleOptions.hbo) {
-    rules.push('GEOSITE,hbo,HBO')
+    rules.push('GEOSITE,hbo,📺HBO')
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: 'HBO',
+      name: '📺HBO',
       type: 'select',
-      proxies: ['默认节点', ...proxyGroupsRegionNames, '直连'],
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
       url: 'https://www.hbo.com/favicon.ico',
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/HBO.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/HBO.png',
+    })
+  }
+
+  if (ruleOptions.fubotv) {
+    rules.push(
+        'RULE-SET,fubotv,📺FuboTV',
+      )
+    ruleProviders.set('fubotv', {
+      ...ruleProviderCommon,
+      behavior: 'classical',
+      format: 'text',
+      url: 'https://cdn.jsdelivr.net/gh/netshowers/flying@refs/heads/main/FuboTV.list',
+      path: './ruleset/netshowers/fubotv.list',
+    })
+    config['proxy-groups'].push({
+      ...groupBaseOption,
+      name: '📺FuboTV',
+      type: 'select',
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
+      url: 'https://www.fubo.tv',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure@refs/heads/master/IconSet/Color/FOX.png',
+    })
+  }
+
+  if (ruleOptions.paypal) {
+    rules.push(
+        'RULE-SET,paypal,💳PayPal',
+      )
+    ruleProviders.set('paypal', {
+      ...ruleProviderCommon,
+      behavior: 'classical',
+      format: 'text',
+      url: 'https://ghproxy.net/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/PayPal/PayPal.list',
+      path: './ruleset/netshowers/paypal.list',
+    })
+    config['proxy-groups'].push({
+      ...groupBaseOption,
+      name: '💳PayPal',
+      type: 'select',
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
+      url: 'https://www.fubo.tv',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure@master/IconSet/Color/PayPal.png',
+    })
+  }
+
+  if (ruleOptions.dazn) {
+    rules.push(
+        'RULE-SET,dazn,📺DAZN',
+      )
+    ruleProviders.set('dazn', {
+      ...ruleProviderCommon,
+      behavior: 'classical',
+      format: 'text',
+      url: 'https://ghproxy.net/https:/raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/DAZN/DAZN.list',
+      path: './ruleset/netshowers/dazn.list',
+    })
+    config['proxy-groups'].push({
+      ...groupBaseOption,
+      name: '📺DAZN',
+      type: 'select',
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
+      url: 'https://www.dazn.com',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure@refs/heads/master/IconSet/Color/DAZN_1.png',
     })
   }
 
   if (ruleOptions.tvb) {
-    rules.push('GEOSITE,tvb,TVB')
+    rules.push('GEOSITE,tvb,📺TVB')
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: 'TVB',
+      name: '📺TVB',
       type: 'select',
-      proxies: ['默认节点', ...proxyGroupsRegionNames, '直连'],
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
       url: 'https://www.tvb.com/logo_b.svg',
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/TVB.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/TVB.png',
     })
   }
 
   if (ruleOptions.primevideo) {
-    rules.push('GEOSITE,primevideo,Prime Video')
+    rules.push('GEOSITE,primevideo,📺Prime Video')
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: 'Prime Video',
+      name: '📺Prime Video',
       type: 'select',
-      proxies: ['默认节点', ...proxyGroupsRegionNames, '直连'],
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
       url: 'https://m.media-amazon.com/images/G/01/digital/video/web/logo-min-remaster.png',
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Prime_Video.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Prime_Video.png',
     })
   }
 
   if (ruleOptions.hulu) {
-    rules.push('GEOSITE,hulu,Hulu')
+    rules.push('GEOSITE,hulu,📺Hulu')
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: 'Hulu',
+      name: '📺Hulu',
       type: 'select',
-      proxies: ['默认节点', ...proxyGroupsRegionNames, '直连'],
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
       url: 'https://auth.hulu.com/v4/web/password/authenticate',
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Hulu.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Hulu.png',
     })
   }
 
   if (ruleOptions.telegram) {
-    rules.push('GEOIP,telegram,Telegram')
+    rules.push('GEOIP,telegram,💬Telegram')
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: 'Telegram',
+      name: '💬Telegram',
       type: 'select',
-      proxies: ['默认节点', ...proxyGroupsRegionNames, '直连'],
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
       url: 'http://www.telegram.org/img/website_icon.svg',
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Telegram.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Telegram.png',
     })
   }
 
   if (ruleOptions.whatsapp) {
-    rules.push('GEOSITE,whatsapp,WhatsApp')
+    rules.push('GEOSITE,whatsapp,💬WhatsApp')
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: 'WhatsApp',
+      name: '💬WhatsApp',
       type: 'select',
-      proxies: ['默认节点', ...proxyGroupsRegionNames, '直连'],
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
       url: 'https://web.whatsapp.com/data/manifest.json',
       icon: 'https://static.whatsapp.net/rsrc.php/v3/yP/r/rYZqPCBaG70.png',
     })
   }
 
   if (ruleOptions.line) {
-    rules.push('GEOSITE,line,Line')
+    rules.push('GEOSITE,line,💬Line')
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: 'Line',
+      name: '💬Line',
       type: 'select',
-      proxies: ['默认节点', ...proxyGroupsRegionNames, '直连'],
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
       url: 'https://line.me/page-data/app-data.json',
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Line.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Line.png',
     })
   }
 
   if (ruleOptions.games) {
     rules.push(
-      'GEOSITE,category-games@cn,国内网站',
-      'GEOSITE,category-games,游戏专用'
+      'GEOSITE,category-games@cn,🏠国内网站',
+      'GEOSITE,category-games,🎮游戏专用'
     )
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: '游戏专用',
+      name: '🎮游戏专用',
       type: 'select',
-      proxies: ['默认节点', ...proxyGroupsRegionNames, '直连'],
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Game.png',
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Game.png',
     })
   }
 
   if (ruleOptions.tracker) {
-    rules.push('GEOSITE,tracker,跟踪分析')
+    rules.push('GEOSITE,tracker,🚫跟踪分析')
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: '跟踪分析',
+      name: '🚫跟踪分析',
       type: 'select',
-      proxies: ['REJECT', '直连', '默认节点'],
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Reject.png',
+      proxies: ['REJECT', '直连', '🚀默认节点'],
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Reject.png',
     })
   }
 
   if (ruleOptions.ads) {
-    rules.push('GEOSITE,category-ads-all,广告过滤')
-    rules.push('RULE-SET,adblockmihomo,广告过滤')
-    ruleProviders.set('adblockmihomo', {
-      ...ruleProviderCommon,
-      behavior: 'domain',
-      format: 'mrs',
-      url: 'https://github.com/217heidai/adblockfilters/raw/refs/heads/main/rules/adblockmihomo.mrs',
-      path: './ruleset/adblockfilters/adblockmihomo.mrs',
-    })
+    rules.push('GEOSITE,category-ads-all,🚫广告过滤')
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: '广告过滤',
+      name: '🚫广告过滤',
       type: 'select',
-      proxies: ['REJECT', '直连', '默认节点'],
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Advertising.png',
+      proxies: ['REJECT', '直连', '🚀默认节点'],
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Advertising.png',
     })
   }
 
   if (ruleOptions.apple) {
-    rules.push('GEOSITE,apple-cn,苹果服务')
+    rules.push('GEOSITE,apple-cn,🍎苹果服务')
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: '苹果服务',
+      name: '🍎苹果服务',
       type: 'select',
-      proxies: ['默认节点', ...proxyGroupsRegionNames, '直连'],
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
       url: 'http://www.apple.com/library/test/success.html',
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Apple_2.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Apple_2.png',
     })
   }
 
   if (ruleOptions.google) {
-    rules.push('GEOSITE,google,谷歌服务')
+    rules.push('GEOSITE,google,🔍谷歌服务')
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: '谷歌服务',
+      name: '🔍谷歌服务',
       type: 'select',
-      proxies: ['默认节点', ...proxyGroupsRegionNames, '直连'],
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
       url: 'http://www.google.com/generate_204',
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Google_Search.png',
-    })
-  }
-
-  if (ruleOptions.github) {
-    rules.push('GEOSITE,github,Github')
-    config['proxy-groups'].push({
-      ...groupBaseOption,
-      name: 'Github',
-      type: 'select',
-      proxies: ['默认节点', ...proxyGroupsRegionNames, '直连'],
-      url: 'https://github.com/robots.txt',
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/GitHub.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Google_Search.png',
     })
   }
 
   if (ruleOptions.microsoft) {
-    rules.push('GEOSITE,microsoft@cn,国内网站', 'GEOSITE,microsoft,微软服务')
+    rules.push('GEOSITE,microsoft@cn,🏠国内网站', 'GEOSITE,microsoft,🪟微软服务')
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: '微软服务',
+      name: '🪟微软服务',
       type: 'select',
-      proxies: ['默认节点', ...proxyGroupsRegionNames, '直连'],
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
       url: 'http://www.msftconnecttest.com/connecttest.txt',
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Microsoft.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Microsoft.png',
     })
   }
-
+  if (ruleOptions.github) {
+    rules.push('GEOSITE,github,👨‍💻Github')
+    config['proxy-groups'].push({
+      ...groupBaseOption,
+      name: '👨‍💻Github',
+      type: 'select',
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
+      url: 'https://github.com/robots.txt',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/GitHub.png',
+    })
+  }
   if (ruleOptions.japan) {
     rules.push(
-      'RULE-SET,category-bank-jp,日本网站',
-      'GEOIP,jp,日本网站,no-resolve'
+      'RULE-SET,category-bank-jp,🗾日本网站',
+      'GEOIP,jp,🗾日本网站,no-resolve'
     )
     ruleProviders.set('category-bank-jp', {
       ...ruleProviderCommon,
       behavior: 'domain',
       format: 'mrs',
-      url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-bank-jp.mrs',
+      url: 'https://cdn.hashy.top/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-bank-jp.mrs',
       path: './ruleset/MetaCubeX/category-bank-jp.mrs',
     })
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: '日本网站',
+      name: '🗾日本网站',
       type: 'select',
-      proxies: ['默认节点', ...proxyGroupsRegionNames, '直连'],
+      proxies: ['🚀默认节点', ...proxyGroupsRegionNames, '直连'],
       url: 'https://r.r10s.jp/com/img/home/logo/touch.png',
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/JP.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/JP.png',
     })
   }
 
   rules.push(
     'GEOSITE,private,DIRECT',
     'GEOIP,private,DIRECT,no-resolve',
-    'GEOSITE,cn,国内网站',
-    'GEOIP,cn,国内网站,no-resolve',
-    'MATCH,其他外网'
+    'GEOSITE,cn,🏠国内网站',
+    'GEOIP,cn,🏠国内网站,no-resolve',
+    'MATCH,🌍其他外网'
   )
   config['proxy-groups'].push(
     {
       ...groupBaseOption,
-      name: '下载软件',
+      name: '⬇️下载软件',
       type: 'select',
       proxies: [
         '直连',
         'REJECT',
-        '默认节点',
-        '国内网站',
+        '🚀默认节点',
+        '🏠国内网站',
         ...proxyGroupsRegionNames,
       ],
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Download.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Download.png',
     },
     {
       ...groupBaseOption,
-      name: '其他外网',
+      name: '🌍其他外网',
       type: 'select',
-      proxies: ['默认节点', '国内网站', ...proxyGroupsRegionNames],
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Streaming!CN.png',
+      proxies: ['🚀默认节点', '🏠国内网站', ...proxyGroupsRegionNames],
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/Streaming!CN.png',
     },
     {
       ...groupBaseOption,
-      name: '国内网站',
+      name: '🏠国内网站',
       type: 'select',
-      proxies: ['直连', '默认节点', ...proxyGroupsRegionNames],
+      proxies: ['直连', '🚀默认节点', ...proxyGroupsRegionNames],
       url: 'http://wifi.vivo.com.cn/generate_204',
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/StreamingCN.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/StreamingCN.png',
     }
   )
 
@@ -743,10 +785,10 @@ function main(config) {
   if (otherProxyGroups.length > 0) {
     config['proxy-groups'].push({
       ...groupBaseOption,
-      name: '其他节点',
+      name: '🌐其他节点',
       type: 'select',
       proxies: otherProxyGroups,
-      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/World_Map.png',
+      icon: 'https://cdn.hashy.top/gh/Koolson/Qure/IconSet/Color/World_Map.png',
     })
   }
 
