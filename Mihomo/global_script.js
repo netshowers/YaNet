@@ -131,7 +131,7 @@ const regionOptions = {
  */
 const defaultDNS = ['tls://223.5.5.5']
 
-const chinaDNS = ['202.96.69.38','202.96.64.68']
+const chinaDNS = ['119.29.29.29', '223.5.5.5']
 
 //const foreignDNS = ['tls://8.8.8.8', 'tls://1.1.1.1', 'tls://9.9.9.9']
 const foreignDNS = ['https://120.53.53.53/dns-query', 'https://223.5.5.5/dns-query']
@@ -193,10 +193,6 @@ const rules = [
   'RULE-SET,applications,⬇️下载软件',
   'PROCESS-NAME,SunloginClient,DIRECT',
   'PROCESS-NAME,SunloginClient.exe,DIRECT',
-  'DOMAIN-SUFFIX,micu.hk,DIRECT',
-  'DOMAIN-SUFFIX,023168.xyz,DIRECT',
-  'DOMAIN-SUFFIX,hifini.com,DIRECT',
-  'DOMAIN-SUFFIX,hdfans.org,DIRECT',
 ]
 
 // 程序入口
